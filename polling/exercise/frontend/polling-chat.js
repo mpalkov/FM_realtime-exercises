@@ -20,9 +20,18 @@ async function postNewMsg(user, text) {
 }
 
 async function getNewMsgs() {
-  // poll the server
-  // write code here
-}
+  let json;
+  try {
+    const res = await fetch("/poll");
+    json = await res.json();
+  }
+  catch (e) {
+    console.error("polling error ", e);
+  }
+  allChat = json.msg;
+  render();
+  setTimeout(getNewMsgs, INTERVAL);
+};
 
 function render() {
   // as long as allChat is holding all current messages, this will render them
